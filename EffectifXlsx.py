@@ -7,4 +7,5 @@ def get_xls_data(xls_file):
 def main():
     var = get_xls_data("EFFECTIFS_CAMPUS.xlsx")
     print(var)
+    
 main()
