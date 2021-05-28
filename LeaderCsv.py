@@ -9,10 +9,10 @@ def get_csv_data(csv_file):
             data.append(row.encode("latin-1").decode("utf-8").strip("\ufeff")[:-1].split(";"))
     return data
 
-def main():
-    var = get_csv_data("Listeleads.csv")
-    for n in var : 
-        print(n)
+# def main():
+#     var = get_csv_data("Listeleads.csv")
+#     for n in var : 
+#         print(n)
 
     
-main()
+# main()
