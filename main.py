@@ -1,4 +1,5 @@
 from neomodel import StructuredNode, StringProperty, RelationshipTo, RelationshipFrom, config, UniqueIdProperty, IntegerProperty
+from neomodel.exceptions import DoesNotExist
 from neomodel.relationship_manager import Relationship
 from LeaderCsv import get_csv_data
 from EffectifXlsx import get_xls_data
@@ -7,12 +8,12 @@ config.DATABASE_URL = 'bolt://neo4j:password@localhost:7687'
 
 # Class 
 class Partenaire(StructuredNode):
-    nom = StringProperty(required = True)
+    nom = StringProperty(required = True, unique_index=True,)
     chefs = RelationshipFrom('Etudiant', 'échange avec')
     teams = RelationshipFrom('Teams', 'travaille pour')
 
 class Personne(StructuredNode):
-    nom = StringProperty(required = True)
+    nom = StringProperty(required = True, unique_index=True,)
 
 class Etudiant(Personne):
     école = StringProperty()
@@ -41,8 +42,14 @@ class Sherpa(Personne):
 def addleadsAndPartenaire(leads):
     for row in leads:
         if (row[0] != "Projet"):
-            chef = ChefDeProjet(nom=row[1], école="Epita").save()
-            sousfifre = ChefDeProjet(nom=row[2], école="Epita").save()
+            try:
+                chef = ChefDeProjet.nodes.get(nom=row[1])
+            except DoesNotExist:
+                chef = ChefDeProjet(nom=row[1], école="Epita").save()
+            try:
+                sousfifre = ChefDeProjet.nodes.get(nom=row[2])
+            except DoesNotExist:
+               sousfifre = ChefDeProjet(nom=row[2], école="Epita").save()
             partenaire = Partenaire(nom=row[0]).save()
             chef.partenaire.connect(partenaire)
             sousfifre.binome.connect(chef)
@@ -50,25 +57,25 @@ def addleadsAndPartenaire(leads):
 
 def addIsgTeams(teams):
     for index, row in teams.iterrows():
-        print(row[1], row[2])
+        print(row)
         #print("______________________________________________________________")
     #print(teams)
-    teams = Teams(numéro=5).save()
-    sherpa1 = Sherpa(nom="ilaa").save()
-    sherpa2 = Sherpa(nom="paoaoa").save()
-    sherpa1.sherpa2.connect(sherpa2)
-    partenaire = Partenaire(nom='villages').save()
-    teams.partenaire.connect(partenaire)
-    eleves1 = Eleves(nom="a").save()
-    eleves2 = Eleves(nom="b").save()
-    eleves3 = Eleves(nom="c").save()
-    eleves4 = Eleves(nom="d").save()
-    eleves5 = Eleves(nom="e").save()
-    eleves1.teams.connect(teams)
-    eleves2.teams.connect(teams)
-    eleves3.teams.connect(teams)
-    eleves4.teams.connect(teams)
-    eleves5.teams.connect(teams)
+    # teams = Teams(numéro=5).save()
+    # sherpa1 = Sherpa(nom="ilaa").save()
+    # sherpa2 = Sherpa(nom="paoaoa").save()
+    # sherpa1.sherpa2.connect(sherpa2)
+    # partenaire = Partenaire(nom='villages').save()
+    # teams.partenaire.connect(partenaire)
+    # eleves1 = Eleves(nom="a").save()
+    # eleves2 = Eleves(nom="b").save()
+    # eleves3 = Eleves(nom="c").save()
+    # eleves4 = Eleves(nom="d").save()
+    # eleves5 = Eleves(nom="e").save()
+    # eleves1.teams.connect(teams)
+    # eleves2.teams.connect(teams)
+    # eleves3.teams.connect(teams)
+    # eleves4.teams.connect(teams)
+    # eleves5.teams.connect(teams)
 
 
 # Main Function
