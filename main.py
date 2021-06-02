@@ -50,33 +50,42 @@ def addleadsAndPartenaire(leads):
                 sousfifre = ChefDeProjet.nodes.get(nom=row[2])
             except DoesNotExist:
                sousfifre = ChefDeProjet(nom=row[2], école="Epita").save()
-            partenaire = Partenaire(nom=row[0]).save()
+            try:
+                partenaire = Partenaire.nodes.get(nom=row[0])
+            except:
+                partenaire = Partenaire(nom=row[0]).save()
             chef.partenaire.connect(partenaire)
             sousfifre.binome.connect(chef)
             #sousfifre.partenaire.connect(partenaire)
 
 def addIsgTeams(teams):
     for index, row in teams.iterrows():
-        print(row)
-        #print("______________________________________________________________")
-    #print(teams)
-    # teams = Teams(numéro=5).save()
-    # sherpa1 = Sherpa(nom="ilaa").save()
-    # sherpa2 = Sherpa(nom="paoaoa").save()
-    # sherpa1.sherpa2.connect(sherpa2)
-    # partenaire = Partenaire(nom='villages').save()
-    # teams.partenaire.connect(partenaire)
-    # eleves1 = Eleves(nom="a").save()
-    # eleves2 = Eleves(nom="b").save()
-    # eleves3 = Eleves(nom="c").save()
-    # eleves4 = Eleves(nom="d").save()
-    # eleves5 = Eleves(nom="e").save()
-    # eleves1.teams.connect(teams)
-    # eleves2.teams.connect(teams)
-    # eleves3.teams.connect(teams)
-    # eleves4.teams.connect(teams)
-    # eleves5.teams.connect(teams)
-
+            #print(row)
+            print("nom: ", row[1] +" " + row[2], "equipe: ", row[4], "partenaire: ", row[5], "sherpa1", row[7], "sherpa2", row[8])
+            try:
+                teams = Teams.nodes.get(numéro=row[4])
+            except DoesNotExist:
+                 teams = Teams(numéro=row[4]).save()
+            try:
+                sherpa1 = Sherpa.nodes.get(nom=row[7])
+            except:
+                sherpa1 = Sherpa(nom=row[7]).save()
+            try:
+                sherpa2 = sherpa2.nodes.get(nom=row[8])
+            except:    
+                sherpa2 = Sherpa(nom=row[8]).save()
+            sherpa1.sherpa2.connect(sherpa2)
+            sherpa1.équipe.connect(teams)
+            try:
+                partenaire = Partenaire.nodes.get(nom=row[5])
+            except:
+                partenaire = Partenaire(nom=row[5]).save()
+            teams.partenaire.connect(partenaire)
+            try:
+                eleves1 = Eleves.nodes.get(nom=row[1] + " " + row[2])
+            except:
+                eleves1 = Eleves(nom=row[1] + " " + row[2]).save()
+            eleves1.teams.connect(teams)
 
 # Main Function
 def main():
