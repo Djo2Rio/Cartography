@@ -3,8 +3,8 @@ from neomodel.exceptions import DoesNotExist
 from neomodel.relationship_manager import Relationship
 from LeaderCsv import get_csv_data
 from EffectifXlsx import get_xls_data
+from Normalise import *
 config.DATABASE_URL = 'bolt://neo4j:password@localhost:7687'
-
 
 # Class 
 class Partenaire(StructuredNode):
@@ -24,7 +24,7 @@ class Etudiant(Personne):
     école = StringProperty()
 
 class ChefDeProjet(Etudiant):
-    partenaire = RelationshipTo('Partenaire', 'échange avec')
+    partenaire = RelationshipTo('Partenaire', 'gère le projet')
     binome = Relationship('Etudiant', 'collabore avec')
 
 class Leader(Personne):
@@ -35,7 +35,6 @@ class Leads(Personne):
     partenaire = RelationshipTo('Projet', 'pilote et gère')
     binome = Relationship('Leads', 'collabore avec')
     Consultant = Relationship('Consultant', 'consulte')
-
 
 class Consultant(Personne):
     pole = Relationship('Pole', 'aide')
@@ -48,10 +47,7 @@ class Eleves(Etudiant):
     teams = Relationship('Teams', 'appatienne à')
 
 class Teams(StructuredNode):
-    numéro = IntegerProperty() # numéro de l'équipe
-    # missions vers partenaire
-    # lien vers chef d projets et binome
-    # lien vers sherpa
+    numéro = StringProperty() # numéro de l'équipe
     partenaire = RelationshipTo('Partenaire', 'travaille pour')
 
 class Sherpa(Personne):
@@ -73,42 +69,44 @@ def addleadsAndPartenaire(leads, projet):
             except DoesNotExist:
                sousfifre = ChefDeProjet(nom=row[2], école="Epita").save()
             try:
-                partenaire = Partenaire.nodes.get(nom=row[0])
+                partenaire = Partenaire.nodes.get(nom=NormalCasePartenaire(row[0]))
             except:
-                partenaire = Partenaire(nom=row[0]).save()
+                partenaire = Partenaire(nom=NormalCasePartenaire(row[0])).save()
             chef.partenaire.connect(partenaire)
             sousfifre.binome.connect(chef)
             partenaire.projet.connect(projet)
             #sousfifre.partenaire.connect(partenaire)
 
 def addIsgTeams(teams):
-    for index, row in teams.iterrows():
+    equipe = ["Lille", "Bordeaux", "Lyon" ,"Paris","Strasbourg" ,"Toulouse"]
+    i = 0
+    for frame in teams.values():
+        print(frame)
+        for index, row in frame.iterrows():
             #print(row)
-            #print("nom: ", row[1] +" " + row[2], "equipe: ", row[4], "partenaire: ", row[5], "sherpa1", row[7], "sherpa2", row[8])
+            # if (row[0] == "MURET"):
+            #     print(row)
+            #print("nom: ", row[0] +" " + row[1], "equipe: ", row[3], "partenaire: ", NormalCasePartenaire(row[4]), "sherpa1", NormalCaseName(row[5]), "sherpa2", NormalCaseName(row[6]))
             try:
-                teams = Teams.nodes.get(numéro=row[4])
+                teams = Teams.nodes.get(numéro= "[" + equipe[i]+ "] "  + "Equipe " + str(row[3]))
             except DoesNotExist:
-                 teams = Teams(numéro=row[4]).save()
+                 teams = Teams(numéro="[" + equipe[i]+ "] "  + "Equipe " + str(row[3])).save()
             try:
-                sherpa1 = Sherpa.nodes.get(nom=row[7])
+                sherpa1 = Sherpa.nodes.get(nom=NormalCaseName(row[5]))
             except:
-                sherpa1 = Sherpa(nom=row[7]).save()
+                sherpa1 = Sherpa(nom= NormalCaseName(row[5])).save()
             try:
-                sherpa2 = sherpa2.nodes.get(nom=row[8])
+                sherpa2 = sherpa2.nodes.get(nom= NormalCaseName(row[6]))
             except:    
-                sherpa2 = Sherpa(nom=row[8]).save()
+                sherpa2 = Sherpa(nom= NormalCaseName(row[6])).save()
             sherpa1.sherpa2.connect(sherpa2)
             sherpa1.équipe.connect(teams)
             try:
-                partenaire = Partenaire.nodes.get(nom=row[5])
+                partenaire = Partenaire.nodes.get(nom=NormalCasePartenaire(row[4]))
             except:
-                partenaire = Partenaire(nom=row[5]).save()
+                partenaire = Partenaire(nom=NormalCasePartenaire(row[4])).save()
             teams.partenaire.connect(partenaire)
-            try:
-                eleves1 = Eleves.nodes.get(nom=row[1] + " " + row[2])
-            except:
-                eleves1 = Eleves(nom=row[1] + " " + row[2]).save()
-            eleves1.teams.connect(teams)
+        i += 1
 
 # Main Function
 def main():
@@ -126,6 +124,7 @@ def main():
     leads = get_csv_data("Listeleads.csv")
     var = get_xls_data("EFFECTIFS_CAMPUS.xlsx")
     addleadsAndPartenaire(leads, projet)
+    var = clearExcel(var)
     addIsgTeams(var)
 
 
