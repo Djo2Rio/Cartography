@@ -68,7 +68,7 @@ def matchCorrectProjectName(projectName):
     if  re.match("Abbaye Pouilhes", projectName) or re.match("Prouilhe", projectName):
         return "Abbaye Prouilhe"
     if  re.match("Villages Pro Btp", projectName):
-        return "Village Pro BTP"
+        return "Village Pro Btp"
     return projectName
     
 
