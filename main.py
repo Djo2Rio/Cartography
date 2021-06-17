@@ -4,8 +4,13 @@ from neomodel.relationship_manager import Relationship
 from LeaderCsv import get_csv_data
 from EffectifXlsx import get_xls_data
 from Normalise import *
-config.DATABASE_URL = 'bolt://neo4j:password@localhost:7687'
+import sys
 
+if (len(sys.argv) > 1):
+    address = sys.argv[1]
+else:
+    address = 'bolt://neo4j:password@localhost:7687'
+config.DATABASE_URL = address
 # Class 
 class Partenaire(StructuredNode):
     nom = StringProperty(required = True, unique_index=True,)
