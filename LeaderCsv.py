@@ -1,6 +1,5 @@
 import csv
 
-
 def get_csv_data(csv_file):
     # Colonnes: Projet, Binôme, Contact Leader, Contact Binôme, Téléphone Leader, Téléphone Binôme
     data = []
@@ -8,11 +7,3 @@ def get_csv_data(csv_file):
         for row in file:
             data.append(row.encode("latin-1").decode("utf-8").strip("\ufeff")[:-1].split(";"))
     return data
-
-# def main():
-#     var = get_csv_data("Listeleads.csv")
-#     for n in var : 
-#         print(n)
-
-    
-# main()

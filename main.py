@@ -88,10 +88,6 @@ def addIsgTeams(teams):
     for frame in teams.values():
         print(frame)
         for index, row in frame.iterrows():
-            #print(row)
-            # if (row[0] == "MURET"):
-            #     print(row)
-            #print("nom: ", row[0] +" " + row[1], "equipe: ", row[3], "partenaire: ", NormalCasePartenaire(row[4]), "sherpa1", NormalCaseName(row[5]), "sherpa2", NormalCaseName(row[6]))
             try:
                 teams = Teams.nodes.get(numéro= "[" + equipe[i]+ "] "  + "Equipe " + str(row[3]))
             except DoesNotExist:
