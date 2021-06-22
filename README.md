@@ -35,6 +35,8 @@ Well done you are almost done.
 Now you can go back to Neo4j and click on Open.
 A window will appear and you should see the result of this cartography of Planete Solidaire.
 
+
+## :rotating_light: Please note that you don't need to normalize the files, the programm will do it by itself.
 # Advanced tutorial
 
 If you are on linux you can run the project by typing ```python3 -m venv tutorial-env```, `source tutorial-env/bin/activate`, ` python -m pip install -r requirements.txt` in the terminal where the folder cartography is while Neo4j is running and after that you can launch the cartography with :
