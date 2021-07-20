@@ -1,7 +1,6 @@
-from neomodel.exceptions import DoesNotExist
-from src.LeaderCsv import get_csv_data
-from src.EffectifXlsx import get_xls_data
-from Normalise import *
+from src.parser.LeaderCsv import get_csv_data
+from src.parser.EffectifXlsx import get_xls_data
+from src.Normalise import *
 import sys
 from src.Class import *
 from src.CommitData import *

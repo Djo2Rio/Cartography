@@ -1,5 +1,6 @@
-from Normalise import *
+from src.Normalise import *
 from src.Class import *
+from neomodel.exceptions import DoesNotExist
 
 # Utility Fonction
 def addleadsAndPartenaire(leads, projet):
