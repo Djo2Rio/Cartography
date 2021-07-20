@@ -26,7 +26,7 @@ Next step :
 - In the file explorator go to the folder Cartography_unzip click on it. The path should look like this .../Cartography_zip/Cartography.
 - Go on the "file" button and click on "open with Windows Powershell" and open it without admin right.
 - In this window type this command ``python3 -m venv tutorial-env``
-Wait for it to be executed then type ``tutorial-env\Scripts\activate.bat``
+Wait for it to be executed then type ``tutorial-env\Scripts\activate``
 - Finally type ``python -m pip install -r requirements.txt``
 Well done you are almost done.
 - To launch the program type :
