@@ -74,27 +74,26 @@ def matchCorrectProjectName(projectName):
 
 def clearExcel(teams):
     for frame in teams.values():
-        #print(frame)
         try:
             del frame['promo']
             del frame['MISSION']
         except:
-            print("a")
+            print("Cannot delete Promo and Mission column")
         try:
             del frame['CLASSE']
         except:
-            print("b")
+            print("Cannot delete CLASSE column")
         try:
             del frame['Classe']
         except:
-            print("c")
+            print("Cannot delete Classe column")
         try:
             del frame['MISSION (Segment ou KPI)']
         except:
-            print('d')
+            print('Cannot delete Mission (Segment ou KPI) column')
         try:
             del frame['Mission 5 : Brand content & RS']
         except:
-            print('e')
+            print('Cannot delete Mission Brand content & RS column')
         frame.fillna(method='ffill', inplace=True)
     return teams

@@ -5,9 +5,3 @@ def get_json_data(json_file):
         json_dump = json.load(file)
     sherpas = json_dump["sherpas"]
     return sherpas
-
-def main():
-    var = get_json_data("sherpas.json")
-    for n in var : 
-        print(n)
-main()

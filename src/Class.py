@@ -45,5 +45,5 @@ class Teams(StructuredNode):
 
 class Sherpa(Personne):
     équipe = Relationship('Teams', 'pilote et note')
-    # lien evrs sherpa
+    # lien vers sherpa
     sherpa2 = Relationship('Sherpa', 'travaille avec')

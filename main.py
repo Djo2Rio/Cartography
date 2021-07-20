@@ -24,12 +24,11 @@ def main():
     mai.partenaire.connect(projet)
     mai.binome.connect(maya)
     mai.Consultant.connect(michel)
-    leads = get_csv_data("Listeleads.csv")
-    var = get_xls_data("EFFECTIFS_CAMPUS.xlsx")
+    leads = get_csv_data("Ressources/Listeleads.csv")
+    var = get_xls_data("Ressources/EFFECTIFS_CAMPUS.xlsx")
     addleadsAndPartenaire(leads, projet)
     var = clearExcel(var)
     addIsgTeams(var)
-
 
 if __name__ == "__main__":
     main()

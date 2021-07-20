@@ -21,13 +21,11 @@ def addleadsAndPartenaire(leads, projet):
             chef.partenaire.connect(partenaire)
             sousfifre.binome.connect(chef)
             partenaire.projet.connect(projet)
-            #sousfifre.partenaire.connect(partenaire)
 
 def addIsgTeams(teams):
     equipe = ["Lille", "Bordeaux", "Lyon" ,"Paris","Strasbourg" ,"Toulouse"]
     i = 0
     for frame in teams.values():
-        print(frame)
         for index, row in frame.iterrows():
             try:
                 teams = Teams.nodes.get(numéro= "[" + equipe[i]+ "] "  + "Equipe " + str(row[3]))
