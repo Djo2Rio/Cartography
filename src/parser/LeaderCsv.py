@@ -1,7 +1,19 @@
 import csv
 
 def get_csv_data(csv_file):
-    # Colonnes: Projet, Binôme, Contact Leader, Contact Binôme, Téléphone Leader, Téléphone Binôme
+
+    """ Convert a csv file to a list
+
+    Args:
+        csv_file ([type]): A CSV file with the format :
+                            Colonnes: 
+                                Projet, Binôme, Contact Leader,
+                                Contact Binôme, Téléphone Leader, Téléphone Binôme
+
+    Returns:
+        [List]: A list
+    """
+    
     data = []
     with open(csv_file, "r") as file:
         for row in file:

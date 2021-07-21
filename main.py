@@ -5,6 +5,9 @@ import sys
 from src.Class import *
 from src.CommitData import *
 
+
+
+# If not arguments is given, set a default generic database url adress
 if (len(sys.argv) > 1):
     address = sys.argv[1]
 else:
@@ -13,17 +16,25 @@ config.DATABASE_URL = address
 
 # Main Function
 def main():
+
+    """ Creates Project, Leader, Consultant and leads nodes,
+        Then, creates nodes in Neo4j with data presents in Excel and CSV files.
+    """
+
+    # Main nodes (This data are not in the ressources files)
     projet = Projet(nom="Planète Solidaire").save()
     leader = Leader(nom="Caroline DePaoli").save()
-    leader.partenaire.connect(projet)
-
     michel = Consultant(nom="Michel Sasson").save()
-
     mai= Leads(nom="Mai-Linh Lannes").save()
     maya = Leads(nom="Maya Hannachi").save()
+    
+    # Relationships between the main nodes
+    leader.partenaire.connect(projet)
     mai.partenaire.connect(projet)
     mai.binome.connect(maya)
     mai.Consultant.connect(michel)
+
+    # Parse data from the ressources files then creates nodes in Neo4j with them
     leads = get_csv_data("Ressources/Listeleads.csv")
     var = get_xls_data("Ressources/EFFECTIFS_CAMPUS.xlsx")
     addleadsAndPartenaire(leads, projet)

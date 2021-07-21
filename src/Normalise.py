@@ -1,6 +1,17 @@
 import re
 
 def nameCorrection(name):
+    
+    """ Remove unwanted charcaters from a string Name
+
+    Args:
+        name (string): A name with some unwanted characters to remove (?, OK, .) ,
+        or an email to transform into a real name
+
+    Returns:
+        [string]: A name composed by a fistname and a lastname separates by a space
+    """
+
     str = re.sub("\(OK\)", "", name)
     str = re.sub("\(\?\)", "", str)
     str = re.sub("@isg.fr", "", str)
@@ -8,6 +19,16 @@ def nameCorrection(name):
     return str
 
 def NormalCaseName(string):
+    
+    """ Format a string to looks likes Firstname LASTNAME
+
+    Args:
+        string (string): A name 
+
+    Returns:
+        [string]: A name
+    """
+
     string = nameCorrection(string)
     string.lower()
     list = string.split()
@@ -16,6 +37,17 @@ def NormalCaseName(string):
     return list[0][0].upper() + list[0][1:] + " "+ list[1].upper()
 
 def NormalCasePartenaire(string):
+    
+    """ Convert the first character of each word to uppercase,
+        then call a function for standardization of all names
+
+    Args:
+        string (string): A name corresponding to a Partners
+
+    Returns:
+        [string]: A name corresponding to a Partners
+    """
+
     string = string.lower()
     list = string.split()
     newstr = ""
@@ -24,6 +56,15 @@ def NormalCasePartenaire(string):
     return matchCorrectProjectName(newstr[:-1])
 
 def matchCorrectProjectName(projectName):
+    
+    """ Match a Partners name to a stardarized name
+
+    Args:
+        projectName (string): A name corresponding to a Partners
+
+    Returns:
+        [type]: A standarized name corresponding to a Partners
+    """
 
     result = re.match("Dumas", projectName) 
     if result or re.match("Artiste François Dumas", projectName):
@@ -73,6 +114,16 @@ def matchCorrectProjectName(projectName):
     
 
 def clearExcel(teams):
+
+    """ Deletes unnecessary columns in a object representing a Excel file
+
+    Args:
+        teams (dict of DataFrames): An object
+
+    Returns:
+        [dict of DataFrames]: The same object with the unnecessary columns removed.
+    """
+
     for frame in teams.values():
         try:
             del frame['promo']

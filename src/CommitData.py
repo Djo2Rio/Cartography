@@ -4,8 +4,19 @@ from neomodel.exceptions import DoesNotExist
 
 # Utility Fonction
 def addleadsAndPartenaire(leads, projet):
+    
+    """ Create nodes: Chef de Projet and Partenaire in Neo4j,
+        Add relashionships between the nodes
+
+    Args:
+        leads (list): A list of row with the following data for each row :
+                                    Projet, Binôme, Contact Leader, Contact Binôme,
+                                    Téléphone Leader, Téléphone Binôme
+        projet (Projet node): A Neo4j representing the Projet node 
+    """
+
     for row in leads:
-        if (row[0] != "Projet"):
+        if row[0] != "Projet":
             try:
                 chef = ChefDeProjet.nodes.get(nom=row[1])
             except DoesNotExist:
@@ -23,7 +34,18 @@ def addleadsAndPartenaire(leads, projet):
             partenaire.projet.connect(projet)
 
 def addIsgTeams(teams):
-    equipe = ["Lille", "Bordeaux", "Lyon" ,"Paris","Strasbourg" ,"Toulouse"]
+    
+    """ Create nodes : teams, sherpa and Partenaire in Neo4j,
+        and the relashionships between them
+
+    Args:
+        teams (dict of DataFrames): A dict of Dataframes that represents an excel files
+    """
+
+    equipe = [
+        "Lille", "Bordeaux", "Lyon",
+        "Paris","Strasbourg" ,"Toulouse"
+    ]
     i = 0
     for frame in teams.values():
         for index, row in frame.iterrows():
